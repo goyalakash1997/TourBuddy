@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    tools:context="com.example.asd.location.MainActivity">
+
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="28dp"
+        android:focusable="true"
+        android:fontFamily="cursive"
+        android:text="Welcome To Agra"
+        android:textColor="#000000"
+        android:textSize="40dp" />
+
+    <com.mikhaellopez.circularimageview.CircularImageView
+        android:id="@+id/circularImageView"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/text"
+        android:layout_marginStart="17dp"
+        android:layout_marginTop="45dp"
+        android:elevation="20dp"
+        android:src="@drawable/toilets"
+        app:civ_border_color="#000000"
+        app:civ_border_width="3dp"
+        app:civ_shadow="true"
+        android:onClick="Search4"
+        app:civ_shadow_color="#ffffff"
+        app:civ_shadow_radius="10" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/circularImageView"
+        android:layout_below="@+id/circularImageView"
+        android:layout_marginStart="37dp"
+        android:text="Toilets"
+        android:focusable="true"
+        android:fontFamily="sans-serif-condensed"
+        android:textColor="#000000"
+        android:textSize="25sp" />
+
+    <com.mikhaellopez.circularimageview.CircularImageView
+        android:id="@+id/hospital"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/circularImageView"
+        android:layout_marginEnd="14dp"
+        android:elevation="20dp"
+        android:src="@drawable/hospital"
+        app:civ_border_color="#000000"
+        app:civ_border_width="3dp"
+        app:civ_shadow="true"
+        app:civ_shadow_color="#ffffff"
+        app:civ_shadow_radius="10"
+        android:onClick="Search2"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/textView"
+        android:layout_alignBottom="@+id/textView"
+        android:layout_alignEnd="@+id/hospital"
+        android:layout_marginEnd="20dp"
+        android:text="Hospitals"
+        android:fontFamily="sans-serif-condensed"
+        android:focusable="true"
+        android:textColor="#000000"
+        android:textSize="25sp" />
+
+    <com.mikhaellopez.circularimageview.CircularImageView
+        android:id="@+id/police"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_alignStart="@+id/circularImageView"
+        android:layout_below="@+id/textView"
+        android:layout_marginTop="60dp"
+        android:elevation="20dp"
+        android:src="@drawable/police"
+        app:civ_border_color="#000000"
+        app:civ_border_width="3dp"
+        app:civ_shadow="true"
+        app:civ_shadow_color="#ffffff"
+        app:civ_shadow_radius="10"
+        android:onClick="Search"/>
+
+    <TextView
+        android:id="@+id/policetext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/police"
+        android:layout_below="@+id/police"
+        android:focusable="true"
+        android:fontFamily="sans-serif-condensed"
+        android:text="Police Stations"
+        android:textColor="#000000"
+        android:textSize="25sp" />
+
+    <com.mikhaellopez.circularimageview.CircularImageView
+        android:id="@+id/shopping"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_alignStart="@+id/hospital"
+        android:layout_alignTop="@+id/police"
+        android:elevation="20dp"
+        android:onClick="Search3"
+        android:src="@drawable/shopping"
+        app:civ_border_color="#000000"
+        app:civ_border_width="3dp"
+        app:civ_shadow="true"
+        app:civ_shadow_color="#ffffff"
+        app:civ_shadow_radius="10" />
+
+    <TextView
+        android:id="@+id/shoppingtext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/policetext"
+        android:layout_alignBottom="@+id/policetext"
+        android:layout_alignStart="@+id/shopping"
+        android:focusable="true"
+        android:fontFamily="sans-serif-condensed"
+        android:text="Shopping Malls"
+        android:textColor="#000000"
+        android:textSize="25sp" />
+
+</RelativeLayout>
