@@ -32,10 +32,12 @@ public class Details2 extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
                 String s=words.get(i).get("id");
-                String url="https://maps.googleapis.com/maps/api/place/details/json?placeid=" + s+ "&fields=name,rating,formatted_phone_number&key=AIzaSyBR1zWS3xmW7UHyKlXKVajMpyO17Prj6SE";
-                Object dataTransfer[] = new Object[1];
+                String url="https://maps.googleapis.com/maps/api/place/details/json?placeid=" + s+ "&fields=name,rating,formatted_phone_number,formatted_address&key=AIzaSyBR1zWS3xmW7UHyKlXKVajMpyO17Prj6SE";
+                Object dataTransfer[] = new Object[3];
                 // dataTransfer[0] = text;
                 dataTransfer[0] = url;
+                dataTransfer[1]=words.get(i).get("lattitude");
+                dataTransfer[2]=words.get(i).get("longitude");
                 GetNearbyPlaceDetails nearbyPlaceDetails=new GetNearbyPlaceDetails(Details2.this);
                 nearbyPlaceDetails.execute(dataTransfer);
             }

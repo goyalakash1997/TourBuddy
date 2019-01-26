@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="18dp"
         android:focusable="true"
         android:fontFamily="cursive"
         android:text="Welcome To Agra"
@@ -27,13 +27,13 @@
         android:layout_alignParentStart="true"
         android:layout_below="@+id/text"
         android:layout_marginStart="17dp"
-        android:layout_marginTop="45dp"
+        android:layout_marginTop="36dp"
         android:elevation="20dp"
+        android:onClick="Search4"
         android:src="@drawable/toilets"
         app:civ_border_color="#000000"
         app:civ_border_width="3dp"
         app:civ_shadow="true"
-        android:onClick="Search4"
         app:civ_shadow_color="#ffffff"
         app:civ_shadow_radius="10" />
 
@@ -77,7 +77,8 @@
         android:fontFamily="sans-serif-condensed"
         android:focusable="true"
         android:textColor="#000000"
-        android:textSize="25sp" />
+        android:textSize="25sp"
+        android:id="@+id/textView3" />
 
     <com.mikhaellopez.circularimageview.CircularImageView
         android:id="@+id/police"
@@ -85,15 +86,15 @@
         android:layout_height="150dp"
         android:layout_alignStart="@+id/circularImageView"
         android:layout_below="@+id/textView"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="14dp"
         android:elevation="20dp"
+        android:onClick="Search"
         android:src="@drawable/police"
         app:civ_border_color="#000000"
         app:civ_border_width="3dp"
         app:civ_shadow="true"
         app:civ_shadow_color="#ffffff"
-        app:civ_shadow_radius="10"
-        android:onClick="Search"/>
+        app:civ_shadow_radius="10" />
 
     <TextView
         android:id="@+id/policetext"
@@ -115,7 +116,7 @@
         android:layout_alignTop="@+id/police"
         android:elevation="20dp"
         android:onClick="Search3"
-        android:src="@drawable/shopping"
+        android:src="@drawable/atms"
         app:civ_border_color="#000000"
         app:civ_border_width="3dp"
         app:civ_shadow="true"
@@ -126,12 +127,12 @@
         android:id="@+id/shoppingtext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/policetext"
-        android:layout_alignBottom="@+id/policetext"
-        android:layout_alignStart="@+id/shopping"
+        android:layout_alignEnd="@+id/textView3"
+        android:layout_below="@+id/shopping"
+        android:layout_marginEnd="13dp"
         android:focusable="true"
         android:fontFamily="sans-serif-condensed"
-        android:text="Shopping Malls"
+        android:text="ATMS"
         android:textColor="#000000"
         android:textSize="25sp" />
 

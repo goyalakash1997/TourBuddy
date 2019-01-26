@@ -20,6 +20,7 @@ class GetNearbyPlaceDetails extends AsyncTask<Object,String,String> {
     //GoogleMap mMap;
     //TextView text;
     String url;
+    String lat="",lon="";
     private Context context;
 
 
@@ -31,6 +32,8 @@ class GetNearbyPlaceDetails extends AsyncTask<Object,String,String> {
         //mMap=
         //text = (TextView) objects[0];
         url = (String) objects[0];
+        lat= (String) objects[1];
+        lon= (String) objects[2];
         DownloadUrl downloadUrl = new DownloadUrl();
         try {
             googlePlacesData = downloadUrl.readUrl(url);
@@ -72,8 +75,13 @@ class GetNearbyPlaceDetails extends AsyncTask<Object,String,String> {
         s=placeDetails.get("place_name")+" "+placeDetails.get("phone")+" "+placeDetails.get("rating");
         //MainActivity obj=new MainActivity();
        // delegate.processFinish(s);
-        Intent intent=new Intent(context, Final.class);
-        intent.putExtra("EXTRA_SESSION_ID2",s);
+        Intent intent=new Intent(context, rate.class);
+        //intent.putExtra("EXTRA_SESSION_ID2",s);
+        intent.putExtra("phone",placeDetails.get("phone"));
+        intent.putExtra("rating",placeDetails.get("rating"));
+        intent.putExtra("lattitude",lat);
+        intent.putExtra("longitude",lon);
+        intent.putExtra("address",placeDetails.get("address"));
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
     }

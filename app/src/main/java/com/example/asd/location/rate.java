@@ -2,12 +2,14 @@ package com.example.asd.location;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.renderscript.ScriptGroup;
 import android.support.v4.app.ActivityCompat;
@@ -15,9 +17,13 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
+import android.telephony.PhoneNumberUtils;
+import android.telephony.PhoneStateListener;
+import android.telephony.TelephonyManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -59,34 +65,63 @@ public class rate extends AppCompatActivity {
     TextView textView;
     Button submit;
     CardView cardView;
-    ImageButton rating;
+    RatingBar ratingBar;
+    ImageButton rating,calbutton;
     double lattitude, longitude;
     private FusedLocationProviderClient client;
     private GoogleMap mMap;
+    private TelephonyManager mTelephonyManager;
+    private MyPhoneCallListener mListener;
+    private static final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rate);
         textView=findViewById(R.id.address);
-        submit=findViewById(R.id.submit);
-        rating=findViewById(R.id.ratingbutton);
-        cardView=findViewById(R.id.card);
+        ratingBar=findViewById(R.id.ratingBar);
+        //submit=findViewById(R.id.submit);
+      //  rating=findViewById(R.id.ratingbutton);
+       // cardView=findViewById(R.id.card);
+        if(getIntent().getStringExtra("rating")!=null&&!getIntent().getStringExtra("rating").equals(""))
+        ratingBar.setRating(Float.parseFloat(getIntent().getStringExtra("rating")));
         textView.setText(getIntent().getStringExtra("address"));
-        rating.setOnClickListener(new View.OnClickListener() {
+        calbutton=findViewById(R.id.calbutton);
+        calbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                rating.setVisibility(View.GONE);
-                cardView.setVisibility(View.VISIBLE);
+               // String formattedNumber = PhoneNumberUtils.formatNumber(number.getText().toString(),
+                        //Locale.getDefault().getCountry());
+                String formattedNumber="";
+                formattedNumber=getIntent().getStringExtra("phone");
+                Toast.makeText(rate.this,formattedNumber,Toast.LENGTH_LONG).show();
+                if(formattedNumber==null)
+                    formattedNumber="078307 72078";
+                String phoneNumber = String.format("tel: %s",
+                        formattedNumber);
+                // Create the intent.
+                Intent callIntent = new Intent(Intent.ACTION_CALL);
+                // Set the data for the intent as the phone number.
+                callIntent.setData(Uri.parse(phoneNumber));
+                // If package resolves to an app, check for phone permission,
+                // and send intent.
+                if (callIntent.resolveActivity(getPackageManager()) != null) {
+                    checkForPhonePermission();
+                    startActivity(callIntent);
+                }
             }
         });
-        submit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                cardView.setVisibility(View.GONE);
-                rating.setVisibility(View.VISIBLE);
-            }
-        });
+        mTelephonyManager = (TelephonyManager)
+                getSystemService(TELEPHONY_SERVICE);
+      //  checkForSmsPermission();
+        if (isTelephonyEnabled()) {
+            // ...
+            checkForPhonePermission();
+            // Register the PhoneStateListener to monitor phone activity.
+            mListener = new MyPhoneCallListener();
+            mTelephonyManager.listen(mListener,
+                    PhoneStateListener.LISTEN_CALL_STATE);
+        }
         if (ContextCompat.checkSelfPermission(this,
                 android.Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -105,21 +140,22 @@ public class rate extends AppCompatActivity {
                     lattitude = location.getLatitude();
                     longitude = location.getLongitude();
                     LatLng friendLocation = new LatLng(Double.parseDouble(getIntent().getStringExtra("lattitude")), Double.parseDouble(getIntent().getStringExtra("longitude")));
-                    //Location currentUser = new Location("");
-                    //currentUser.setLatitude(lat);
-                    //currentUser.setLongitude(lang);
-                    //Location friend=new Location("");
-                    //friend.setLatitude(Double.parseDouble(tracking.getLat()));
-                    //friend.setLongitude(Double.parseDouble(tracking.getLng()));
+                    Location currentUser = new Location("");
+                    currentUser.setLatitude(lattitude);
+                    currentUser.setLongitude(longitude);
+                    Location friend=new Location("");
+                    friend.setLatitude(Double.parseDouble(getIntent().getStringExtra("lattitude")));
+                    friend.setLongitude(Double.parseDouble(getIntent().getStringExtra("longitude")));
                     mMap.addMarker(new MarkerOptions()
                             .position(friendLocation)
                             .title("Destination")
+                            .snippet("Distance "+new DecimalFormat("#.#").format(distance(currentUser,friend)))
                             .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
                     LatLng current = new LatLng(lattitude, longitude);
                     mMap.addMarker(new MarkerOptions()
                             .position(current)
                             .title("Source"));
-                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lattitude, longitude), 12.0f));
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lattitude, longitude), 14.0f));
                     String url = getRequestUrl(current, friendLocation);
                     TaskRequestDirections taskRequestDirections=new TaskRequestDirections();
                     taskRequestDirections.execute(url);
@@ -242,5 +278,87 @@ public class rate extends AppCompatActivity {
                 Toast.makeText(rate.this,"DirectionsNot Found",Toast.LENGTH_LONG).show();
             }
         }
+    }
+    private void checkForPhonePermission() {
+        if (ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.CALL_PHONE) !=
+                PackageManager.PERMISSION_GRANTED) {
+            // Permission not yet granted. Use requestPermissions().
+            //Log.d(TAG, getString(R.string.permission_not_granted));
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.CALL_PHONE},
+                    MY_PERMISSIONS_REQUEST_CALL_PHONE);
+        } else {
+            // Permission already granted.
+        }
+    }
+    private boolean isTelephonyEnabled() {
+        if (mTelephonyManager != null) {
+            if (mTelephonyManager.getSimState() ==
+                    TelephonyManager.SIM_STATE_READY) {
+                return true;
+            }
+        }
+        return false;
+    }
+    private class MyPhoneCallListener extends PhoneStateListener {
+        private boolean returningFromOffHook = false;
+
+        @Override
+        public void onCallStateChanged(int state, String incomingNumber) {
+            // Define a string for the message to use in a toast.
+            String message = "Hello";
+            switch (state) {
+                case TelephonyManager.CALL_STATE_RINGING:
+                    // Incoming call is ringing
+                    message = message +
+                            "ringing" + incomingNumber;
+                    //Toast.makeText(rate.this, message,
+                      //      Toast.LENGTH_SHORT).show();
+                    //Log.i(TAG, message);
+                    break;
+                case TelephonyManager.CALL_STATE_OFFHOOK:
+                    // Phone call is active -- off the hook
+                    message = message + "offhook";
+                  //  Toast.makeText(rate.this, message,
+                    //        Toast.LENGTH_SHORT).show();
+                    //Log.i(TAG, message);
+                    returningFromOffHook = true;
+                    break;
+                case TelephonyManager.CALL_STATE_IDLE:
+                    // Phone is idle before and after phone call.
+                    // If running on version older than 19 (KitKat),
+                    // restart activity when phone call ends.
+                    message = message + "idle";
+                    //Toast.makeText(rate.this, message,
+                      //      Toast.LENGTH_SHORT).show();
+                    //Log.i(TAG, message)
+                    break;
+                default:
+                    message = message + "Phone off";
+                   // Toast.makeText(rate.this, message,
+                     //       Toast.LENGTH_SHORT).show();
+                    //Log.i(TAG, message);
+                    break;
+            }
+        }
+    }
+    private double distance(Location currentUser,Location friend){
+        double theta=currentUser.getLongitude()-friend.getLongitude();
+        double dist=Math.sin(deg2rad(currentUser.getLatitude()))
+                *Math.sin(deg2rad(friend.getLatitude()))
+                *Math.cos(deg2rad(currentUser.getLatitude()))
+                *Math.cos(deg2rad(friend.getLatitude()))
+                *Math.sin(deg2rad(theta));
+        dist=Math.acos(dist);
+        dist=deg2deg(dist);
+        dist=dist*60*1.1515;
+        return dist;
+    }
+    private double deg2rad(double deg){
+        return (deg*Math.PI/180.0);
+    }
+    private double deg2deg(double rad){
+        return (rad*100/Math.PI);
     }
 }

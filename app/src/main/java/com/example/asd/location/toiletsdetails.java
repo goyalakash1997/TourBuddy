@@ -38,17 +38,19 @@ public class toiletsdetails extends AppCompatActivity{
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
                 String s=words.get(i).get("id");
-                Intent intent=new Intent(toiletsdetails.this,rate.class);
+                /*Intent intent=new Intent(toiletsdetails.this,rate.class);
                 intent.putExtra("lattitude",words.get(i).get("lattitude"));
                 intent.putExtra("longitude",words.get(i).get("longitude"));
                 intent.putExtra("address",words.get(i).get("place_name")+":"+"   "+words.get(i).get("vicinity"));
-                startActivity(intent);
-                /*String url="https://maps.googleapis.com/maps/api/place/details/json?placeid=" + s+ "&fields=name,rating,formatted_phone_number&key=AIzaSyBR73yq-VPLMC2xLuo8aFMpnlILhjUASJU";
-                Object dataTransfer[] = new Object[1];
+                startActivity(intent);*/
+                String url="https://maps.googleapis.com/maps/api/place/details/json?placeid=" + s+ "&fields=name,rating,formatted_phone_number,formatted_address&key=AIzaSyBR73yq-VPLMC2xLuo8aFMpnlILhjUASJU";
+                Object dataTransfer[] = new Object[3];
                 // dataTransfer[0] = text;
                 dataTransfer[0] = url;
-                GetNearbyPlaceDetails nearbyPlaceDetails=new GetNearbyPlaceDetails(Details.this);
-                nearbyPlaceDetails.execute(dataTransfer);*/
+                dataTransfer[1]=words.get(i).get("lattitude");
+                dataTransfer[2]=words.get(i).get("longitude");
+                GetNearbyPlaceDetails nearbyPlaceDetails=new GetNearbyPlaceDetails(toiletsdetails.this);
+                nearbyPlaceDetails.execute(dataTransfer);
             }
         });
     }

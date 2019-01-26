@@ -116,7 +116,7 @@ public class MainActivity extends AppCompatActivity  {
                     //text.setText(lattitude+"     "+longitude);
                     //String url2="https://maps.googleapis.com/maps/api/place/details/json?placeid=ChIJn2Mt3hN3dDkRWizrx9jyxiU&fields=name,rating,formatted_phone_number&key=AIzaSyARh_AUhuwmVsJwro3iPPs0pqu8hJD8xIo";
                     //Context context=Details.this;
-                    String url2="https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + lattitude + "," + longitude + "&rankby=distance&type=shopping_mall&key=AIzaSyB-iHv1FpKboJnfJLIjMoF2ajeB5hThFSY";
+                    String url2="https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + lattitude + "," + longitude + "&rankby=distance&type=atm&key=AIzaSyB-iHv1FpKboJnfJLIjMoF2ajeB5hThFSY";
                     Object dataTransfer[] = new Object[2];
                     // dataTransfer[0] = text;
                     dataTransfer[0] = url2;

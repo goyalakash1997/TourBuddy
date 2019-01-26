@@ -21,6 +21,7 @@ class DataParser {
         //String id="";
         String phone="akash";
         String rating="akash";
+        String address="";
         try {
             if (!((googlePlaceJson.getJSONObject("result")) ==null)) {
                 placeName = googlePlaceJson.getJSONObject("result").getString("name");
@@ -30,6 +31,7 @@ class DataParser {
            // }
             //if(!googlePlaceJson.isNull("rating")){
                 rating=googlePlaceJson.getJSONObject("result").getString("rating");
+                address=googlePlaceJson.getJSONObject("result").getString("formatted_address");
             }
             /*if (!googlePlaceJson.isNull("vicinty")){
                 vicinty=googlePlaceJson.getString("vicinity");
@@ -41,6 +43,7 @@ class DataParser {
             googlePlacesMap.put("place_name",placeName);
             googlePlacesMap.put("phone",phone);
             googlePlacesMap.put("rating",rating);
+            googlePlacesMap.put("address",address);
             //googlePlacesMap.put("vicinity",vicinty);
             //googlePlacesMap.put("lattitude",lattitude);
             //googlePlacesMap.put("longitude",longitude);
